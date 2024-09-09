@@ -1,7 +1,13 @@
 //import { Component } from "react";
 import "./card.styles.css";
+import {Monster} from "../../App";
 
-const Card = ({ actor: { id, name, email }, actorType }) => (
+type CardProps = {
+  actor: Monster,
+  actorType: string
+}
+
+const Card = ({actor: {id, name, email}, actorType}: CardProps) => (
   <div className="card-container">
     <img
       src={`https://robohash.org/${id}?set=set2&size=180x180`}

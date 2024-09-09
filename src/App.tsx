@@ -1,31 +1,39 @@
 //import { Component } from "react";
-import { useState, useEffect } from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 
 import CardList from "./components/card-list/card-list.component";
 import SearchBox from "./components/search-box/search-box.component";
 import "./App.css";
 
+export type Monster = {
+  id: string;
+  name: string;
+  email: string;
+}
+
 const App = () => {
   const [searchText, setSearchText] = useState("");
-  const [monsters, setMonsters] = useState([]);
+  const [monsters, setMonsters] = useState<Monster[]>([]);
   const [filteredMonsters, setFilteredMonster] = useState(monsters);
 
   console.log("rendering");
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((users) => setMonsters(users));
+    const fetchUsers = async () => {
+      const users = await getData<Monster[]>('https://jsonplaceholder.typicode.com/users');
+      setMonsters(users);
+    }
+    fetchUsers();
   }, []); // [] means this effect runs only once on component mounting
 
   useEffect(() => {
     setFilteredMonster(
       monsters.filter((m) => m.name.toLocaleLowerCase().includes(searchText))
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monsters, searchText]);
 
-  const onSearchChange = (event) => {
+  const onSearchChange = (event: ChangeEvent<HTMLInputElement>):void => {
     const searchTextValue = event.target.value.toLocaleLowerCase();
     setSearchText(searchTextValue);
   };
@@ -38,7 +46,7 @@ const App = () => {
         onChangeHandler={onSearchChange}
         dataType="monsters"
       />
-      <CardList monsters={filteredMonsters} />
+      <CardList monsters={filteredMonsters}/>
     </div>
   );
 };

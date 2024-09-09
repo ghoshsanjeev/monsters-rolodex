@@ -5,7 +5,7 @@ import {ChangeEvent, ChangeEventHandler} from "react";
 type SearchBoxProps = {
     className: string;
     dataType?: string;
-    func: ChangeEventHandler; // can use these two lines interchangeably
+    func?: ChangeEventHandler; // can use these two lines interchangeably
     onChangeHandler: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
